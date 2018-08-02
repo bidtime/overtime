@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/11/22 16:23:55.000.372,=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2017/12/06 09:33:23.000.024,=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018/06/06 18:22:31.000.196,=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018/06/25 14:43:29.000.616,=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018/06/25 14:45:33.000.103,C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\Unit1.pas=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018/06/25 14:45:33.000.103,C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\Unit1.dfm=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2018/06/25 14:45:37.000.927,C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\lines.dproj=C:\Users\jss\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2018/07/09 10:15:50.000.374,C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\uFrmMain.pas=C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\Unit1.pas</Transaction>
+    <Transaction>2018/07/09 10:15:50.000.374,C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\uFrmMain.dfm=C:\Users\jss\Documents\Embarcadero\Studio\Projects\lines\Unit1.dfm</Transaction>
+    <Transaction>2018/07/09 10:16:58.000.161,C:\Users\jss\Documents\Embarcadero\Studio\Projects\overtime\lines.dproj=C:\Users\jss\Documents\Embarcadero\Studio\Projects\overtime\overtime.dproj</Transaction>
+    <Transaction>2018/07/09 13:27:27.285,=C:\tools\working\git\bidtime\delphi\delphiutils\src\utils\uCharSplit.pas</Transaction>
+    <Transaction>2018/07/09 17:19:53.136,=C:\tools\working\git\bidtime\delphi\delphiutils\src\utils\uFileUtils.pas</Transaction>
+    <Transaction>2018/07/09 20:28:03.831,C:\tools\working\git\bidtime\delphi\delphiutils\src\utils\uFileUtils.pas=</Transaction>
+  </Transactions>
+</BorlandProject>
