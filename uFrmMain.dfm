@@ -29,36 +29,36 @@ object frmMain: TfrmMain
     Top = 0
     Width = 954
     Height = 24
-    ButtonHeight = 19
+    ButtonHeight = 21
     Caption = 'ToolBar1'
     TabOrder = 0
     object Label1: TLabel
       Left = 0
       Top = 0
       Width = 72
-      Height = 19
+      Height = 21
       Caption = #32771#21220#35760#24405#34892#21495
     end
     object edtStartLines: TEdit
       Left = 72
       Top = 0
       Width = 81
-      Height = 19
+      Height = 21
       TabOrder = 1
       Text = '2'
     end
     object UpDown1: TUpDown
-      Left = 153
+      Left = 169
       Top = 0
       Width = 17
-      Height = 19
+      Height = 21
       Associate = edtStartLines
       Max = 10000
       Position = 2
       TabOrder = 3
     end
     object ToolButton2: TToolButton
-      Left = 170
+      Left = 186
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
@@ -66,46 +66,46 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object Label2: TLabel
-      Left = 178
+      Left = 194
       Top = 0
       Width = 72
-      Height = 19
+      Height = 21
       Caption = #20154#21592#21015#34920#34892#21495
     end
     object edtUserDuty: TEdit
-      Left = 250
+      Left = 266
       Top = 0
       Width = 87
-      Height = 19
+      Height = 21
       TabOrder = 2
       Text = '2'
     end
     object UpDown2: TUpDown
-      Left = 337
+      Left = 353
       Top = 0
       Width = 17
-      Height = 19
+      Height = 21
       TabOrder = 4
     end
     object ToolButton1: TToolButton
-      Left = 354
+      Left = 370
       Top = 0
       Width = 8
       Caption = 'ToolButton1'
       Style = tbsSeparator
     end
     object Label3: TLabel
-      Left = 362
+      Left = 378
       Top = 0
       Width = 48
-      Height = 19
+      Height = 21
       Caption = #21152#29677#26102#38388
     end
     object DateTimePicker1: TDateTimePicker
-      Left = 410
+      Left = 426
       Top = 0
       Width = 108
-      Height = 19
+      Height = 21
       Date = 43290.812500000000000000
       Format = 'HH:mm:ss'
       Time = 43290.812500000000000000
@@ -115,7 +115,7 @@ object frmMain: TfrmMain
       TabOrder = 5
     end
     object ToolButton3: TToolButton
-      Left = 518
+      Left = 534
       Top = 0
       Width = 8
       Caption = 'ToolButton3'
@@ -123,10 +123,10 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object Button1: TButton
-      Left = 526
+      Left = 542
       Top = 0
       Width = 75
-      Height = 19
+      Height = 21
       Caption = 'go'
       TabOrder = 0
       OnClick = Button1Click
@@ -156,8 +156,6 @@ object frmMain: TfrmMain
         #21806#26381#21153#26377#38480#20844#21496#9#9#27491#24120#9)
     ScrollBars = ssBoth
     TabOrder = 1
-    ExplicitTop = 29
-    ExplicitHeight = 580
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -177,8 +175,6 @@ object frmMain: TfrmMain
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 3
-    ExplicitLeft = 576
-    ExplicitWidth = 378
     object Splitter2: TSplitter
       Left = 1
       Top = 161
@@ -213,9 +209,6 @@ object frmMain: TfrmMain
         '2018-05-09'#9'20170703037'#9#39532#20809#31062#9#36719#20214#24320#21457#24037#31243#24072#9'08:24:36;21:06:55'#9)
       ScrollBars = ssBoth
       TabOrder = 0
-      ExplicitTop = 208
-      ExplicitWidth = 376
-      ExplicitHeight = 376
     end
     object memoUser: TMemo
       Left = 1
@@ -358,7 +351,6 @@ object frmMain: TfrmMain
         '20180502020'#9#26446#24935#33452#9#23454#20064#9)
       ScrollBars = ssBoth
       TabOrder = 1
-      ExplicitWidth = 376
     end
   end
 end

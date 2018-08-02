@@ -326,8 +326,8 @@ procedure TfrmMain.doPrepare();
     i, start: integer;
   begin
     start := StrToInt(edtUserDuty.Text);
-    for I := start to self.Memo1.Lines.Count - 1 do begin
-      S := memo1.lines[I];
+    for I := start to strs.Count - 1 do begin
+      S := strs[I];
       if not S.Trim.IsEmpty then begin
         doItPer(S);
       end;
