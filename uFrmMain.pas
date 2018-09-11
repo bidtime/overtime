@@ -19,7 +19,7 @@ type
 
   TfrmMain = class(TForm)
     Memo1: TMemo;
-    Memo2: TMemo;
+    memoDetail: TMemo;
     Button1: TButton;
     ToolBar1: TToolBar;
     edtStartLines: TEdit;
@@ -38,19 +38,23 @@ type
     ToolButton3: TToolButton;
     DateTimePicker1: TDateTimePicker;
     Label3: TLabel;
+    Splitter3: TSplitter;
+    Memo2: TMemo;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     // 2018-07-01, riverbo, 上午/下午, 08:00:00 / 17:00:00
-    FMap: TDictionary<String, TDictionary<String, TDictionary<String, String>>>;
+    FDayUserOvMap: TDictionary<String, TDictionary<String, TDictionary<String, String>>>;
     FUserMaps: TDictionary<String, TUserProp>;
-    procedure doPrepare;
     //
-    function wirteFile(const bWrite: boolean): string;
+    procedure doPrepare;
+    function strs2file(const strs: TStrings; const f: string): boolean;
   public
     { Public declarations }
+    function wirteFile(const bWrite: boolean): string;
   end;
 
 var
@@ -153,7 +157,7 @@ procedure TfrmMain.Button1Click(Sender: TObject);
   begin
     Result := 0;
     if (doItSpin(S, userKey, dateV, timeV)) then begin
-      if not FMap.TryGetValue(dateV, userMap) then begin
+      if not FDayUserOvMap.TryGetValue(dateV, userMap) then begin
         userMap := TDictionary<String, TDictionary<String, String>>.create;
       end;
       bAdd := false;
@@ -175,7 +179,7 @@ procedure TfrmMain.Button1Click(Sender: TObject);
       end;
       if bAdd then begin
         userMap.AddOrSetValue(userKey, amMap);
-        FMap.AddOrSetValue(dateV, userMap);
+        FDayUserOvMap.AddOrSetValue(dateV, userMap);
         Inc(Result);
       end;
     end;
@@ -204,11 +208,20 @@ procedure TfrmMain.Button1Click(Sender: TObject);
 
   procedure mapToLines(map: TDictionary<String, TDictionary<String, TDictionary<String, String>>>; strs: TStrings);
 
-      procedure amMapToLines(const dateV: string; const userName: string;
-        amMap: TDictionary<String, String>; const u: TUserProp);
+      function bool2str(const b: boolean): string;
+      begin
+        if b then begin
+          Result := '1';
+        end else begin
+          Result := '0';
+        end;
+      end;
+
+      function amMapToLines(const dateV: string; const userName: string;
+        amMap: TDictionary<String, String>; const u: TUserProp): boolean;
       var sql: String;
         key, val, ovStrTime, ovStrTimes: String;
-        bOvTime: string;
+        ovTime: string;
       begin
         ovStrTimes := '';
         ovStrTime := '';
@@ -225,26 +238,32 @@ procedure TfrmMain.Button1Click(Sender: TObject);
         end;
         //
         if compateDTime(dateV, ovStrTime, TimeToStr(dateTimePicker1.Time)) then begin
-          bOvTime := '1';
+          Result := true;
         end else begin
-          bOvTime := '0';
+          Result := false;
         end;
         //
+        ovTime := bool2str(Result);
         if (u<>nil) then begin
           sql := dateV + #9 + u.FCode + #9 + userName + #9 + u.FDuty + #9 +
-            ovStrTimes + #9 + bOvTime;
+            ovStrTimes + #9 + ovTime;
         end else begin
           sql := dateV + #9 + '-' + #9 + userName + #9 + '-' + #9 +
-            ovStrTimes + #9 + bOvTime;
+            ovStrTimes + #9 + ovTime;
         end;
         //
         strs.Insert(0, sql);
       end;
 
-    procedure mapToLineD(const dateV: string; M: TDictionary<String, TDictionary<String, String>>);
+    function mapToLineD(const dateV: string; M: TDictionary<String, TDictionary<String, String>>;
+      var persons: integer): string;
     var key, userName: String;
       u: TUserProp;
+      bOvTime: boolean;
+      ovTimeUsers: integer;
     begin
+      Result := '';
+      ovTimeUsers := 0;
       // 2018-07-01, riverbo, 上午/下午, 08:00:00 / 17:00:00
       for Key in M.Keys do begin
         userName := Key;
@@ -253,26 +272,46 @@ procedure TfrmMain.Button1Click(Sender: TObject);
         // FUserMaps
         FUserMaps.TryGetValue(userName, u);
         //amMapToLines(userName, amMap);
-        amMapToLines(dateV, userName, M[Key], u);
+        bOvTime := amMapToLines(dateV, userName, M[Key], u);
+        if bOvTime then begin
+          Inc(ovTimeUsers);
+          //
+          if Result.IsEmpty then begin
+            Result := userName;
+          end else begin
+            Result := Result + #9 + userName;
+          end;
+        end;
+      end;
+      if ovTimeUsers>0 then begin
+        persons := persons + ovTimeUsers;
+        Result := dateV + #9 + IntToStr(ovTimeUsers) + #9 + '' + #9 + Result;
       end;
     end;
 
-  var key, dateV: String;
+  var key, dateV, detailStr: String;
     userMap: TDictionary<String, TDictionary<String, String>>;
+    persons: integer;
   begin
     // 2018-07-01, riverbo, 上午/下午, 08:00:00 / 17:00:00
+    persons := 0;
     for Key in map.Keys do begin
       userMap := map[Key];
       dateV := key;
-      mapToLineD(dateV, userMap);
+      detailStr := mapToLineD(dateV, userMap, persons);
+      if not detailStr.IsEmpty then begin
+        MemoDetail.Lines.Insert(0, detailStr);
+      end;
     end;
+    MemoDetail.Lines.Add('合计:' + #9 + IntToStr(persons));
   end;
 
 var i, start: integer;
   S: string;
 begin
-  FMap.clear;
+  FDayUserOvMap.clear;
   FUserMaps.clear;
+  MemoDetail.Clear;
   //
   Memo2.Clear;
   //
@@ -286,10 +325,16 @@ begin
     end;
   end;
   // show map
-  mapToLines(FMap, Memo2.Lines);
+  mapToLines(FDayUserOvMap, Memo2.Lines);
   //
   Memo2.Lines.insert(0, '考勤日期' + #9 + '员工编码' + #9 + '姓名' + #9 + '职位' + #9 + '打卡记录' + #9 + '加班');
   Memo2.Lines.insert(0, '出勤记录列表');
+  //
+  MemoDetail.Lines.insert(0, '日期' + #9 + '加班人数' + #9 + '餐费' + #9 + '加班名单' + #9 + '人均餐费');
+  MemoDetail.Lines.insert(0, '餐费明细列表');
+  //
+  self.strs2file(Memo2.Lines, '出勤记录列表.csv');
+  self.strs2file(MemoDetail.Lines, '餐费明细列表.csv');
 end;
 
 procedure TfrmMain.doPrepare();
@@ -338,9 +383,8 @@ begin
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
-
 begin
-  FMap := TDictionary<String, TDictionary<String, TDictionary<String, String>>>.create;
+  FDayUserOvMap := TDictionary<String, TDictionary<String, TDictionary<String, String>>>.create;
   FUserMaps := TDictionary<String, TUserProp>.create;
   //
   //self.DateTimePicker1.c('yyyy-MM-dd HH:mm:ss');
@@ -348,8 +392,13 @@ end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
-  FMap.Free;
+  FDayUserOvMap.Free;
   FUserMaps.Free;
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  self.WindowState := wsMaximized;
 end;
 
 function TfrmMain.wirteFile(const bWrite: boolean): string;
@@ -372,6 +421,14 @@ begin
   finally
     myinifile.Free;
   end;
+end;
+
+function TfrmMain.strs2file(const strs: TStrings; const f: string): boolean;
+var FName: string;
+begin
+  FName := ExtractFilePath(Paramstr(0)) + f;
+  strs.SaveToFile(fName, TEncoding.UTF8);
+  Result := true;
 end;
 
 end.
