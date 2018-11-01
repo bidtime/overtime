@@ -91,7 +91,7 @@ procedure TfrmMain.Button1Click(Sender: TObject);
     strs := TStringList.Create;
     try
       TCharSplit.SplitChar(S, #9, strs);
-      if strs.Count>=10 then begin
+      if strs.Count>=9 then begin
         userKey := strs[1];
         dateTimeV := strs[5];
         spinStr(dateTimeV, dateV, timeV);
