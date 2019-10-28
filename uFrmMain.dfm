@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = #32771#21220#35760#24405#32479#35745' build 2018-09-11 riverbo'
+  Caption = #32771#21220#35760#24405#32479#35745' build 2019-10-25 riverbo'
   ClientHeight = 628
   ClientWidth = 954
   Color = clBtnFace
@@ -43,13 +43,13 @@ object frmMain: TfrmMain
     object edtStartLines: TEdit
       Left = 72
       Top = 0
-      Width = 81
+      Width = 113
       Height = 21
       TabOrder = 1
       Text = '2'
     end
     object UpDown1: TUpDown
-      Left = 169
+      Left = 185
       Top = 0
       Width = 17
       Height = 21
@@ -59,7 +59,7 @@ object frmMain: TfrmMain
       TabOrder = 3
     end
     object ToolButton2: TToolButton
-      Left = 186
+      Left = 202
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
@@ -67,14 +67,14 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object Label2: TLabel
-      Left = 194
+      Left = 210
       Top = 0
       Width = 72
       Height = 21
       Caption = #20154#21592#21015#34920#34892#21495
     end
     object edtUserDuty: TEdit
-      Left = 266
+      Left = 282
       Top = 0
       Width = 87
       Height = 21
@@ -82,28 +82,28 @@ object frmMain: TfrmMain
       Text = '2'
     end
     object UpDown2: TUpDown
-      Left = 353
+      Left = 369
       Top = 0
       Width = 17
       Height = 21
       TabOrder = 4
     end
     object ToolButton1: TToolButton
-      Left = 370
+      Left = 386
       Top = 0
       Width = 8
       Caption = 'ToolButton1'
       Style = tbsSeparator
     end
     object Label3: TLabel
-      Left = 378
+      Left = 394
       Top = 0
       Width = 48
       Height = 21
       Caption = #21152#29677#26102#38388
     end
     object DateTimePicker1: TDateTimePicker
-      Left = 426
+      Left = 442
       Top = 0
       Width = 108
       Height = 21
@@ -116,7 +116,7 @@ object frmMain: TfrmMain
       TabOrder = 5
     end
     object ToolButton3: TToolButton
-      Left = 534
+      Left = 550
       Top = 0
       Width = 8
       Caption = 'ToolButton3'
@@ -124,13 +124,29 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object Button1: TButton
-      Left = 542
+      Left = 558
       Top = 0
       Width = 75
       Height = 21
       Caption = 'go'
       TabOrder = 0
       OnClick = Button1Click
+    end
+    object ToolButton4: TToolButton
+      Left = 633
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton4'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object cbxOV: TCheckBox
+      Left = 641
+      Top = 0
+      Width = 120
+      Height = 21
+      Caption = #20986#21220#35760#24405#21482#26174#21152#29677
+      TabOrder = 6
     end
   end
   object Memo1: TMemo

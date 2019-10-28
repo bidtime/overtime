@@ -40,6 +40,8 @@ type
     Label3: TLabel;
     Splitter3: TSplitter;
     Memo2: TMemo;
+    ToolButton4: TToolButton;
+    cbxOV: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -52,6 +54,7 @@ type
     //
     procedure doPrepare;
     function strs2file(const strs: TStrings; const f: string): boolean;
+    function file2strs(const strs: TStrings; const f: string): boolean;
   public
     { Public declarations }
     function wirteFile(const bWrite: boolean): string;
@@ -91,7 +94,7 @@ procedure TfrmMain.Button1Click(Sender: TObject);
     strs := TStringList.Create;
     try
       TCharSplit.SplitChar(S, #9, strs);
-      if strs.Count>=9 then begin
+      if strs.Count>=6 then begin
         userKey := strs[1];
         dateTimeV := strs[5];
         spinStr(dateTimeV, dateV, timeV);
@@ -252,7 +255,13 @@ procedure TfrmMain.Button1Click(Sender: TObject);
             ovStrTimes + #9 + ovTime;
         end;
         //
-        strs.Insert(0, sql);
+        if (cbxOv.checked) then begin
+          if Result then begin
+            strs.Insert(0, sql);
+          end;
+        end else begin
+          strs.Insert(0, sql);
+        end;
       end;
 
     function mapToLineD(const dateV: string; M: TDictionary<String, TDictionary<String, String>>;
@@ -333,6 +342,8 @@ begin
   MemoDetail.Lines.insert(0, '日期' + #9 + '加班人数' + #9 + '餐费' + #9 + '加班名单' + #9 + '人均餐费');
   MemoDetail.Lines.insert(0, '餐费明细列表');
   //
+  self.strs2file(Memo1.Lines, '打卡记录列表.csv');
+  self.strs2file(MemoUser.Lines, '人员列表.csv');
   self.strs2file(Memo2.Lines, '出勤记录列表.csv');
   self.strs2file(MemoDetail.Lines, '餐费明细列表.csv');
 end;
@@ -341,27 +352,34 @@ procedure TfrmMain.doPrepare();
 
   procedure initUserDuty(strs: TStrings);
 
-    function doItPer(const S: string): boolean;
+    function doUserStrs(const strs: TStrings): boolean;
     var
-      strs: TStrings;
       userName: string;
       u: TUserProp;
     begin
       Result := false;
+      userName := strs[1].Trim;
+      if not FUserMaps.ContainsKey(userName) then begin
+        u := TUserProp.Create;
+        u.FCode := strs[0];
+        u.FUser := userName;
+        u.FDuty := strs[2];
+        FUserMaps.AddOrSetValue(u.FUser, u);
+        //
+        Result := true;
+      end;
+    end;
+
+    function doItPer(const S: string): boolean;
+    var
+      strs: TStrings;
+    begin
+      Result := false;
       strs := TStringList.Create;
-      u := TUserProp.Create;
       try
         TCharSplit.SplitChar(S, #9, strs);
         if strs.Count>=3 then begin
-          userName := strs[1].Trim;
-          if not FUserMaps.ContainsKey(userName) then begin
-            u.FCode := strs[0];
-            u.FUser := userName;
-            u.FDuty := strs[2];
-            FUserMaps.AddOrSetValue(u.FUser, u);
-            //
-            Result := true;
-          end;
+          Result := doUserStrs(strs);
         end;
       finally
         strs.Free;
@@ -387,6 +405,10 @@ begin
   FDayUserOvMap := TDictionary<String, TDictionary<String, TDictionary<String, String>>>.create;
   FUserMaps := TDictionary<String, TUserProp>.create;
   //
+  self.file2strs(Memo1.Lines, '打卡记录列表.csv');
+  self.file2strs(MemoUser.Lines, '人员列表.csv');
+  self.file2strs(Memo2.Lines, '出勤记录列表.csv');
+  self.file2strs(MemoDetail.Lines, '餐费明细列表.csv');
   //self.DateTimePicker1.c('yyyy-MM-dd HH:mm:ss');
 end;
 
@@ -428,6 +450,16 @@ var FName: string;
 begin
   FName := ExtractFilePath(Paramstr(0)) + f;
   strs.SaveToFile(fName, TEncoding.UTF8);
+  Result := true;
+end;
+
+function TfrmMain.file2strs(const strs: TStrings; const f: string): boolean;
+var FName: string;
+begin
+  FName := ExtractFilePath(Paramstr(0)) + f;
+  if FileExists(FName) then begin
+    strs.LoadFromFile(fName, TEncoding.UTF8);
+  end;
   Result := true;
 end;
 
